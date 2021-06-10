@@ -1,20 +1,25 @@
 const User = require('../models/User');
 
 module.exports = {
-    async store(req, res){
-        const uuid = req.body.uuid;
+    async getTodos(req, res){
+        const { id } = req.params;
+
+        const requestedUser = await User.findByPk(id)
+    },
+
+    async store(req, res){  
+        const { id } = req.body;
         
-        /*const userExists = await User.findAll({ where: {id: uuid}});
+        const userExists = await User.findAll({ where: {id: id}});
         if(userExists.length > 0  || userExists == null){
             return res
                 .status(401)
-                .json({ error: 'Já existe um usuário com esse nome de usuário!' });
-        }     */
-
-        const newUser = await User.create({uuid: uuid});
+                .json({ error: 'Já existe um usuário com esse ID!' });
+        }     
+        const newUser  = await User.create({id});
 
         return res
-            .status(200)
+            .status(201)
             .json(newUser);
     }
 };
