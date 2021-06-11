@@ -4,7 +4,21 @@ module.exports = {
     async getTodos(req, res){
         const { id } = req.params;
 
-        const requestedUser = await User.findByPk(id)
+        const requestedUser = await User.findByPk(id, {
+            attributes: [],
+            include: {
+                association: 'todos',
+            }
+        });
+
+        if(!requestedUser)
+            return res
+                .status(404)
+                .json({ error: 'Usuário não encontrado.'})
+
+        return res
+            .status(200)
+            .json(requestedUser);
     },
 
     async store(req, res){  
