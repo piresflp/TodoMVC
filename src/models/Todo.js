@@ -8,14 +8,13 @@ class Todo extends Model{
                 type: DataTypes.BOOLEAN,
                 defaultValue: false,
             },
-            id_user: DataTypes.STRING,
         }, {
             sequelize,
         });
     }
 
     static associate(models){
-        this.belongsTo(models.User, {foreignKey: 'id_user', as: 'fkTodosUser'});
+        this.belongsTo(models.User, {foreignKey: 'id_user', as: 'user'});
     }
 }
 

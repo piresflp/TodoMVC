@@ -9,4 +9,7 @@ const connection = new Sequelize(dbConfig);
 User.init(connection);
 Todo.init(connection);
 
+User.associate(connection.models);
+Todo.associate(connection.models);
+
 module.exports = connection;

@@ -13,7 +13,7 @@ class User extends Model{
     }
 
     static associate(models){
-        this.hasMany(models.Todos, {foreignKey: 'id_user', as: 'fkUserTodos'});
+        this.hasMany(models.Todo, {foreignKey: 'id', as: 'todos'});
     }
 }
 
