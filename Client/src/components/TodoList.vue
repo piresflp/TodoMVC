@@ -4,8 +4,9 @@
   
     <div v-for="(todo, index) in todos" :key="todo.id" class="todo-item">
       <div class="todo-item-left">
-        <div v-if="!todo.is_editing" @dblclick="editTodo(todo)" class="todo-item-label">{{todo.text}}</div>
-        <input v-else class="todo-item-edit" type="text" v-model="todo.text" @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)">
+        <input type="checkbox" v-model="todo.is_completed">
+        <div v-if="!todo.is_editing" @dblclick="editTodo(todo)" class="todo-item-label" :class="{is_completed: todo.is_completed}">{{todo.text}}</div>
+        <input v-else class="todo-item-edit" type="text" v-model="todo.text" @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)" v-focus>
       </div>
 
       <div class="remove-item" @click="removeTodo(index)">
@@ -21,6 +22,7 @@ export default {
   data () {
     return {
       newTodo: '',
+      beforeEditCache: '',
       idForTodo: 3,
       todos: [
         {
@@ -36,6 +38,11 @@ export default {
           'is_editing': false
         }
       ]
+    }
+  },
+  directives: {
+    focus: {
+      inserted: function(el){ el.focus() }
     }
   },
   methods: {
@@ -54,9 +61,17 @@ export default {
 
     },
     editTodo(todo){
+      this.beforeEditCache = todo.text;
       todo.is_editing = true
     },
     doneEdit(todo){
+      if(todo.text.trim() == '') // prevents editing empty todos
+        todo.text = this.beforeEditCache;
+
+      todo.is_editing = false;
+    },
+    cancelEdit(todo){
+      todo.text = this.beforeEditCache;
       todo.is_editing = false;
     },
     removeTodo(index){
@@ -114,5 +129,10 @@ export default {
   &:focus{
     outline: none;
   }
+}
+
+.is_completed{
+  text-decoration: line-through;
+  color: grey;
 }
 </style>
