@@ -1,7 +1,7 @@
 <template>
   <div>
     <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
-  
+  <transition-group name="fade" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
     <div v-for="(todo, index) in todosFiltered" :key="todo.id" class="todo-item">
       <div class="todo-item-left">
         <input type="checkbox" v-model="todo.is_completed">
@@ -20,6 +20,7 @@
       </label></div>
       <div>{{remaining}} items left</div>
     </div>
+  </transition-group>
 
       <div class="extra-container">
         <div>
@@ -29,7 +30,9 @@
         </div>
 
         <div>
-          Clear Completed
+          <transition name="fade">
+          <button v-if="showClearCompletedButton" @click="clearCompleted">Clear Completed</button>
+          </transition>
         </div>
     </div>
   </div>  
@@ -78,6 +81,9 @@ export default {
         return this.todos.filter(todo => todo.is_completed)
 
       return this.todos;
+    },
+    showClearCompletedButton(){
+      return this.todos.filter(todo => todo.is_completed).length > 0
     }
   },
   directives: {
@@ -119,12 +125,17 @@ export default {
     },
     checkAllTodos(){
       this.todos.forEach((todo) => todo.is_completed = event.target.checked)
+    },
+    clearCompleted(){
+      this.todos = this.todos.filter(todo => !todo.is_completed)
     }
   }
 }
 </script>
 
 <style lang="scss">
+ @import url("https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css");
+
 .todo-input {
     width: 100%;
     padding: 10px 18px;
@@ -205,5 +216,13 @@ button{
 
 .active{
   background: lightgreen;
+}
+
+// CSS Transitions
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .2s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>
