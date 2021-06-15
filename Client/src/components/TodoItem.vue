@@ -53,18 +53,18 @@ export default {
   },
   methods: {
     removeTodo(id) {
-      this.$emit('removedTodo', id)
+      eventBus.$emit('removedTodo', id)
     },
     editTodo() {
       this.beforeEditCache = this.title
       this.editing = true
     },
     doneEdit() {
-      if (this.title.trim() == '') {
+      if (this.title.trim() == '') 
         this.title = this.beforeEditCache
-      }
+      
       this.editing = false
-      this.$emit('finishedEdit', {
+      eventBus.$emit('finishedEdit', {
         'id': this.id,
         'title': this.title,
         'is_completed': this.is_completed,
