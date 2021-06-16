@@ -53,6 +53,12 @@ export default {
     todosFiltered() {
         return this.$store.getters.todosFiltered;
     },
+    userId(){
+
+    },
+    userExists(){
+
+    }
   },
   methods: {
     addTodo() {

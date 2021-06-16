@@ -25,11 +25,11 @@ module.exports = {
         const { id } = req.body;
         
         const userExists = await User.findAll({ where: {id: id}});
-        if(userExists.length > 0  || userExists == null){
+        if(userExists.length > 0)
             return res
-                .status(401)
-                .json({ error: 'Já existe um usuário com esse ID!' });
-        }     
+                .status(200)
+                .json(userExists[0]);
+             
         const newUser  = await User.create({id});
 
         return res

@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: { // global variables
+        userId: '',
         filter: 'all',
         todos: [
             {
@@ -73,6 +74,9 @@ export const store = new Vuex.Store({
             const index = state.todos.findIndex((item) => item.id == id)
             state.todos.splice(index, 1)
         },
+        userId(state, id){
+            this.userId = id;
+        }
     },
     actions: {
         addTodo(context, todo){
@@ -93,5 +97,8 @@ export const store = new Vuex.Store({
         checkAll(context, checked){
             context.commit('checkAll', checked);    
         },
+        userId(context, id){
+            context.commit('userId', id);
+        }
     }
 })
