@@ -1,10 +1,9 @@
-
 <template>
   <div class="todo-item">
     <div class="todo-item-left">
         <input type="checkbox" v-model="is_completed" @change="doneEdit">
-        <div v-if="!editing" @dblclick="editTodo" class="todo-item-label" :class="{ is_completed : is_completed }">{{ title }}</div>
-        <input v-else class="todo-item-edit" type="text" v-model="title" @blur="doneEdit" @keyup.enter="doneEdit" @keyup.esc="cancelEdit" v-focus>
+        <div v-if="!is_editing" @dblclick="editTodo" class="todo-item-label" :class="{ is_completed : is_completed }">{{ text }}</div>
+        <input v-else class="todo-item-edit" type="text" v-model="text" @blur="doneEdit" @keyup.enter="doneEdit" @keyup.esc="cancelEdit" v-focus>
       </div>
       <div class="remove-item" @click="removeTodo(todo.id)">
         &times;
@@ -28,9 +27,9 @@ export default {
   data() {
     return {
       'id': this.todo.id,
-      'title': this.todo.title,
+      'text': this.todo.text,
       'is_completed': this.todo.is_completed,
-      'editing': this.todo.editing,
+      'is_editing': this.todo.is_editing,
       'beforeEditCache': '',
     }
   },
@@ -53,28 +52,27 @@ export default {
   },
   methods: {
     removeTodo(id) {
-      eventBus.$emit('removedTodo', id)
+      this.$store.dispatch('deleteTodo', id);
     },
     editTodo() {
-      this.beforeEditCache = this.title
-      this.editing = true
+      this.beforeEditCache = this.text
+      this.is_editing = true
     },
     doneEdit() {
-      if (this.title.trim() == '') 
-        this.title = this.beforeEditCache
+      if (this.text.trim() == '') 
+        this.text = this.beforeEditCache
       
-      this.editing = false
-      eventBus.$emit('finishedEdit', {
+      this.is_editing = false
+      this.$store.dispatch('updateTodo', {
         'id': this.id,
-        'title': this.title,
+        'text': this.text,
         'is_completed': this.is_completed,
-        'editing': this.editing,
-      })
-
+        'is_editing': this.is_editing,
+      });
     },
     cancelEdit() {
-      this.title = this.beforeEditCache
-      this.editing = false
+      this.text = this.beforeEditCache
+      this.is_editing = false
     },
   }
 }
