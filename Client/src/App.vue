@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="container">
-    <img src="./assets/logo.png" class="logo">
+    <div id="title">todos</div>
     <TodoList/>
   </div>
 </template>
@@ -17,9 +17,9 @@ export default {
   },
   mounted: function () {
     if(!this.userExists)
-          this.createUser();
+        this.createUser();
           
-    this.loadUserTodos();    
+    this.$store.dispatch('loadTodos', localStorage.getItem('userId'));   
   },
   computed: {
     userExists(){
@@ -45,24 +45,12 @@ export default {
             id: userId
           });
 
-          this.$store.dispatch('userId', userId);
           localStorage.setItem('userId', response.data.id);
-          console.log(userId);
         }catch(err){
           console.log(err);
         }        
       })()
     },
-    async loadUserTodos(){
-      try{
-        let url = "http://localhost:3030/users/"+localStorage.getItem('userId')+"/todos";
-        const response = await axios.get(url);
-
-        console.log(response.data);
-      }catch(err){
-        console.log(err);
-      }
-    }
   }
 }
 </script>
@@ -93,5 +81,11 @@ export default {
   display: block;
   margin: 20px auto;
   height: 75px;
+}
+
+#title{
+  font-size: 84px;
+  color: rgba(175, 47, 47, 0.15);
+  text-rendering: optimizeLegibility;
 }
 </style>

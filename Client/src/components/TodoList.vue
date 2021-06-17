@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
+    <input type="text" class="todo-input" placeholder="What needs to be done?" v-model="newTodo" @keyup.enter="addTodo">
     <transition-group name="fade" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
     <todo-item v-for="todo in todosFiltered" :key="todo.id" :todo="todo" :checkAll="!anyRemaining">
     </todo-item>
@@ -53,12 +53,6 @@ export default {
     todosFiltered() {
         return this.$store.getters.todosFiltered;
     },
-    userId(){
-
-    },
-    userExists(){
-
-    }
   },
   methods: {
     addTodo() {
@@ -92,6 +86,8 @@ export default {
       outline: 0;
     }
   }
+
+  
 
   .todo-item {
     margin-bottom: 12px;

@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Todo = require('../models/Todo')
 
 module.exports = {
     async getTodos(req, res){
@@ -8,7 +9,8 @@ module.exports = {
             attributes: [],
             include: {
                 association: 'todos',
-            }
+                order: [{model: Todo}, 'id', 'ASC']
+            },
         });
 
         if(!requestedUser)
@@ -30,7 +32,7 @@ module.exports = {
                 .status(200)
                 .json(userExists[0]);
              
-        const newUser  = await User.create({id});
+        const newUser = await User.create({id});
 
         return res
             .status(201)
