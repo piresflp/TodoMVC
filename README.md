@@ -17,7 +17,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 ## API Build
 ``` bash
 # go to the API folder
-npm install
+cd API
 # run the API
 yarn dev
 ```
