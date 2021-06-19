@@ -1,7 +1,6 @@
 # TodoMVC
 
-> A Vue.js + Node.js project
-In order to the application works properly, both Client and API should be running. Then, go to "localhost:8080".
+> In order to the application works properly, both Client and API should be running. Then, go to "localhost:8080".
 
 ## Client Build Setup
 ``` bash
